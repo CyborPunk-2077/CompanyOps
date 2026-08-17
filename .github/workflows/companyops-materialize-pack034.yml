@@ -1,0 +1,86 @@
+name: CompanyOps materialize verified PACK-034
+
+on:
+  push:
+    paths:
+      - '.companyops-bootstrap/pack034-f0e90737/READY'
+
+permissions:
+  contents: write
+
+jobs:
+  materialize:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout checkpoint branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Reconstruct and verify source archive
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat \
+            .companyops-bootstrap/pack034-f0e90737/pack034.tar.xz.b64.part00 \
+            .companyops-bootstrap/pack034-f0e90737/pack034.tar.xz.b64.part01 \
+            > /tmp/companyops-pack034.b64
+          base64 --decode /tmp/companyops-pack034.b64 > /tmp/companyops-pack034.tar.xz
+          echo 'f54e61ed8788093e91ec40801b2180ce19f01c8debb802537643fe90898aa401  /tmp/companyops-pack034.tar.xz' | sha256sum -c -
+          rm -rf /tmp/companyops-pack034
+          mkdir -p /tmp/companyops-pack034
+          tar -xJf /tmp/companyops-pack034.tar.xz -C /tmp/companyops-pack034
+          test -f /tmp/companyops-pack034/CURRENT_STATE.md
+          test -f /tmp/companyops-pack034/services/simulation-engine/src/companylab_sim/execution.py
+          test -f /tmp/companyops-pack034/apps/api/src/core/experiment-handlers.ts
+          test -f /tmp/companyops-pack034/apps/web/src/lib/result-source.ts
+          grep -q 'PACK-034' /tmp/companyops-pack034/CURRENT_STATE.md
+
+      - name: Replace metadata-only tree with verified source
+        shell: bash
+        run: |
+          set -euo pipefail
+          find . -mindepth 1 -maxdepth 1 ! -name .git -exec rm -rf {} +
+          cp -a /tmp/companyops-pack034/. .
+          find . -type d -name __pycache__ -prune -exec rm -rf {} + || true
+          find . -type f -name '*.pyc' -delete || true
+          rm -rf node_modules .next dist dist-core dist-syntax .pytest_cache || true
+
+      - name: Create durable complete ZIP checkpoint
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p artifacts/checkpoints
+          rm -f artifacts/checkpoints/CompanyOps_CURRENT.zip artifacts/checkpoints/CompanyOps_CURRENT.sha256
+          python - <<'PY'
+          from pathlib import Path
+          import zipfile
+          root=Path('.')
+          out=root/'artifacts/checkpoints/CompanyOps_CURRENT.zip'
+          excluded={'.git','node_modules','.next','dist','dist-core','dist-syntax','__pycache__','.pytest_cache'}
+          with zipfile.ZipFile(out,'w',zipfile.ZIP_DEFLATED,compresslevel=9) as z:
+              for p in sorted(root.rglob('*')):
+                  if not p.is_file():
+                      continue
+                  rel=p.relative_to(root)
+                  if rel==Path('artifacts/checkpoints/CompanyOps_CURRENT.zip') or rel==Path('artifacts/checkpoints/CompanyOps_CURRENT.sha256'):
+                      continue
+                  if any(part in excluded for part in rel.parts) or p.suffix=='.pyc':
+                      continue
+                  z.write(p,rel.as_posix())
+          with zipfile.ZipFile(out) as z:
+              assert z.testzip() is None
+          PY
+          sha256sum artifacts/checkpoints/CompanyOps_CURRENT.zip > artifacts/checkpoints/CompanyOps_CURRENT.sha256
+
+      - name: Commit verified source checkpoint
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'CompanyOps Checkpoint Bot'
+          git config user.email 'companyops-checkpoint@users.noreply.github.com'
+          git add -A
+          git commit -m 'checkpoint: materialize verified PACK-034 source'
+          git tag -f pack-034-execution-live-transport
+          git push origin HEAD:main
+          git push origin refs/tags/pack-034-execution-live-transport --force
