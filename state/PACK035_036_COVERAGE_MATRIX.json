@@ -1,0 +1,25 @@
+{
+  "source":"PACK-034 execution transport + PACK-032 Twinframe + active CompanyOps steering",
+  "total":18,
+  "resolved":18,
+  "items":[
+    {"requirement":"canonical registered-company flagship experiment","status":"RESOLVED"},
+    {"requirement":"deterministic experiment identity","status":"RESOLVED"},
+    {"requirement":"create/get experiment API","status":"RESOLVED"},
+    {"requirement":"current contract/security identities pinned on experiment","status":"RESOLVED"},
+    {"requirement":"experiment-scoped persisted child run IDs","status":"RESOLVED"},
+    {"requirement":"historical reference run IDs preserved","status":"RESOLVED"},
+    {"requirement":"Execution Golden v2","status":"RESOLVED"},
+    {"requirement":"live server-only result source","status":"RESOLVED"},
+    {"requirement":"selected assertion chronology API","status":"RESOLVED"},
+    {"requirement":"create/start server actions","status":"RESOLVED"},
+    {"requirement":"same-origin execution SSE","status":"RESOLVED"},
+    {"requirement":"progress-only client island","status":"RESOLVED"},
+    {"requirement":"no provisional BusinessVerdict","status":"RESOLVED"},
+    {"requirement":"FAILED terminal progress","status":"RESOLVED"},
+    {"requirement":"offline fixture explicit fallback","status":"RESOLVED"},
+    {"requirement":"READY operator QA","status":"RESOLVED"},
+    {"requirement":"RUNNING operator QA","status":"RESOLVED"},
+    {"requirement":"responsive operator shell geometry","status":"RESOLVED"}
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "pack_id":"PACK-036",
+  "title":"Live Flagship Operator Result Source",
+  "depends_on":["PACK-035"],
+  "scope":["server-only live API result source","experiment bootstrap/start server actions","same-origin execution SSE proxy","progress-only client island","honest pending result state","live cockpit/chronology/evidence/replay reads","operator browser QA"],
+  "non_goals":["production auth","generic workflow UI","durable external queue","production SUT execution"],
+  "status":"COMPLETE"
+}
