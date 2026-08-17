@@ -1,0 +1,27 @@
+{
+  "source": "PACK-009 gold-standard UX + PACK-030 sealed projection",
+  "total": 20,
+  "resolved": 20,
+  "items": [
+    {"requirement":"backend projection replaces placeholder cockpit","status":"RESOLVED"},
+    {"requirement":"BusinessVerdict remains backend-owned","status":"RESOLVED"},
+    {"requirement":"ReleaseRecommendation remains backend-owned","status":"RESOLVED"},
+    {"requirement":"AssertionRail selection","status":"RESOLVED"},
+    {"requirement":"stable BLOCK→REVIEW→INFO assertion order","status":"RESOLVED"},
+    {"requirement":"Twinframe baseline/treatment lanes","status":"RESOLVED"},
+    {"requirement":"DivergenceChannel estimate/CI/tolerance","status":"RESOLVED"},
+    {"requirement":"scenario context","status":"RESOLVED"},
+    {"requirement":"deterministic event chronology marks","status":"RESOLVED"},
+    {"requirement":"no fabricated KPI trajectory","status":"RESOLVED"},
+    {"requirement":"ConsequenceSpine evidence chain","status":"RESOLVED"},
+    {"requirement":"aggregate-vs-representative distinction","status":"RESOLVED"},
+    {"requirement":"selected evidence inspector","status":"RESOLVED"},
+    {"requirement":"representative Replay lens","status":"RESOLVED"},
+    {"requirement":"Distribution lens degrades honestly to aggregate summary","status":"RESOLVED"},
+    {"requirement":"Entity lens limited to evidence refs","status":"RESOLVED"},
+    {"requirement":"URL-deep-linked result context","status":"RESOLVED"},
+    {"requirement":"1024 structural transition","status":"RESOLVED"},
+    {"requirement":"mobile result-reader","status":"RESOLVED"},
+    {"requirement":"browser visual QA","status":"RESOLVED"}
+  ]
+}

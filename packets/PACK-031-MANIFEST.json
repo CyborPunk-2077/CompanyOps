@@ -1,0 +1,19 @@
+{
+  "pack_id": "PACK-031",
+  "title": "Twinframe Data Consumption",
+  "scope": [
+    "deterministic web projection fixture generated from Projection Golden v1",
+    "server-first result context routing",
+    "AssertionRail backed by AssertionView",
+    "Twinframe chronology backed by TwinframeChronologyView",
+    "aggregate endpoint/CI/tolerance rendering without fabricated KPI trajectories"
+  ],
+  "non_goals": [
+    "frontend evaluation logic",
+    "live API transport",
+    "new semantic contracts",
+    "synthetic time-series interpolation"
+  ],
+  "depends_on": ["PACK-030"],
+  "status": "COMPLETE"
+}

@@ -1,0 +1,20 @@
+{
+  "pack_id": "PACK-032",
+  "title": "Flagship Result Experience",
+  "scope": [
+    "ConsequenceSpine result evidence",
+    "representative Replay lens",
+    "honest paired-effect Distribution summary",
+    "evidence-scoped Entity lens",
+    "1024 structural transition and mobile result-reader",
+    "deterministic flagship-result browser fixture and visual QA"
+  ],
+  "non_goals": [
+    "live experiment execution orchestration",
+    "production authentication",
+    "raw matched-pair distribution sample visualization",
+    "full Entity projection contract"
+  ],
+  "depends_on": ["PACK-031"],
+  "status": "COMPLETE"
+}
