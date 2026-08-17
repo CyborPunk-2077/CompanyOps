@@ -1,8 +1,0 @@
-{
-  "pack_id":"PACK-035",
-  "title":"Canonical Flagship Experiment Bootstrap",
-  "depends_on":["PACK-034"],
-  "scope":["flagship experiment profile","deterministic experiment identity","registered CompanyPackage bootstrap","create/get experiment API","assertion-aware result reads","experiment-scoped persisted run identities"],
-  "non_goals":["generic scenario builder","production SUT connector","broad experiment authoring UI"],
-  "status":"COMPLETE"
-}
