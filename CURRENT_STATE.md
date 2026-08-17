@@ -1,150 +1,411 @@
 # CompanyOps / CompanyLab — CURRENT STATE
 
-> **Permanent identity:** CompanyOps = CompanyLab. Existing internal `companylab` names are intentional.
+> **Permanent identity:** **CompanyOps = CompanyLab.**
+> Existing internal names (`companylab`, CompanyLab UI, package IDs, schemas and contract URLs) are intentional.
 >
-> **Operating rule:** the active CompanyOps chat is the strategic/product steering brain; the repository/filesystem proves what is actually implemented. GitHub is the durable checkpoint layer, not the product-roadmap authority.
+> **Authority rule:** inspect the filesystem/repository first. Conversation history is intent/rationale only.
 
-## Current implementation
+## Current project state
 
-- Current cumulative milestone: **PACK-036**.
-- Working version: `0.0.36-live-flagship-operator`.
-- Status: `LIVE_FLAGSHIP_OPERATOR_FOUNDATION_READY`.
+### Milestone
+
+- Current cumulative implementation: **PACK-034**.
+- Working version: **`0.0.34-execution-live-transport`**.
+- Status: **`EXECUTION_AND_LIVE_RESULT_TRANSPORT_READY`**.
 - Product: **Business CI — pre-production operational regression testing for business changes.**
-- Current vertical: industrial distributor / machinery & auto-parts operations.
-- Flagship result: Treatment saves purchase cost but causes supplier/service harm; authoritative BusinessVerdict = **FAIL**, ReleaseRecommendation = **BLOCK**.
-- Current active contract count: **37**.
-- Current active contract-lock SHA-256: `2639b0aeb894652ad723cec26eb0a95d3fb3a405fe8bd817da79eaf50f3b54d4`.
-- Historical PACK-010 lock remains immutable: `292da499b452a6c77677b80f68629929180fe9f577579a0bbb6e886ec8851c83`.
-- OpenAPI: **v1.2.0**.
-- PostgreSQL migrations: **7**.
+- Current flagship: cost-first eligible procurement saves unit cost but causes supplier/service harm under a matched supplier-degradation world; authoritative result is **FAIL / BLOCK**.
+- Canonical GitHub repository: `CyborPunk-2077/CompanyOps`.
+- Next recommended coherent batch: **PACK-035 → PACK-036 — Experiment Setup + Preflight and Safety Membrane Execution Boundary**.
 
-## Architecture
+### Canonical project root
+
+The directory containing this file is the canonical project root.
+
+```text
+apps/api/                       workspace API, orchestration, persistence/read handlers
+apps/web/                       server-first Twinframe result UI + live result source
+packages/company-model/         immutable CompanyPackage runtime
+packages/config/                typed environment/config
+packages/contracts/             JSON Schema/OpenAPI/RBAC + generated TS/Python bindings
+packages/testing/               deterministic browser fixtures and visual QA
+packages/ui/                    design system + Twinframe/result primitives
+services/simulation-engine/     simulation, replay, evaluation, projection, execution worker
+database/                       PostgreSQL migrations/tools
+specs/                          architecture/product specifications
+state/                          ADRs, continuity and coverage
+packets/                        PACK manifests
+.github/workflows/              CI
+CURRENT_STATE.md                durable handoff
+```
+
+### Architecture
 
 ```text
 CompanyPackage / Company IR
 → immutable CompanyModel
-→ canonical Experiment
-→ execution coordinator
-→ versioned Python worker protocol
-→ matched Baseline/Treatment simulation
-→ BusinessEvents + pure reducer / replay
-→ KPI observations
-→ matched-pair evaluation
+→ deterministic runtime bootstrap
+→ discrete-event scheduler + semantic HMAC RNG
+→ typed BusinessEvents / pure reducer
+→ exact RuntimeState + snapshots/replay
+→ matched Baseline/Treatment worlds
+→ demand/order/inventory/fulfillment
+→ replenishment/procurement/supplier execution
+→ deterministic KPI observations
+→ matched-pair statistics / assertions
 → BusinessVerdict + ReleaseRecommendation
-→ backend-owned sealed projection
-→ PostgreSQL read models
+→ sealed backend projection
+→ immutable persistence
 → workspace API
-→ server-first Twinframe result experience
+→ server-first Twinframe
 ```
 
-Truth layers remain:
-`DOMAIN → RUNTIME → EVALUATION → SECURITY → BACKEND_PROJECTION → UI`.
-The UI must never recalculate KPI truth, confidence intervals, assertion status, BusinessVerdict or release recommendation.
+Execution application path now exists:
 
-## Completed through PACK-034
+```text
+POST experiment
+→ persistent READY experiment
+→ POST runs
+→ persistent execution claim + real progress-carrier Baseline run
+→ Python execution worker
+→ 200 matched pairs / 400 run observations
+→ evaluation
+→ sealed projection
+→ atomic database seal
+→ terminal SEALED progress
+→ API result reads
+→ server-rendered Twinframe
+```
 
-All prior CompanyOps/CompanyLab work remains preserved: Business CI product boundary, Company IR, BusinessEvent model, deterministic scheduler/RNG/reducer/replay, Safety Membrane/SUT boundary, premium Twinframe UX, PostgreSQL/API foundation, company-model runtime, demand/order/fulfillment, replenishment/procurement/supplier execution, deterministic KPI/evaluation, backend projection/read APIs, and Twinframe flagship result.
+Semantic truth boundary remains:
 
-PACK-033/034 added:
-- `companylab.execution/0.1.0` worker protocol;
-- 200-pair STANDARD execution / 400 child-run summaries;
-- `ExperimentExecutionProgress 1.0` contract;
-- durable execution/progress tables;
-- bounded Python child-process gateway (`shell=false`);
-- atomic run/evaluation/projection sealing;
-- experiment-level SSE progress;
-- **SEALED is emitted only after durable persistence**;
-- replaceable `ExecutionLauncher` port; current in-process launcher is intentionally not crash-durable distributed orchestration.
+```text
+DOMAIN → RUNTIME → EVALUATION → SECURITY → BACKEND PROJECTION → UI
+```
 
-## PACK-035 — Canonical flagship experiment bootstrap
+The web layer may format/navigation-select authoritative data. It must not calculate KPI truth, paired harm, CI, assertion status, verdict, recommendation or gate semantics.
 
-Implemented:
-- `apps/api/src/ports/experiments.ts`;
-- canonical flagship profile in `core/flagship-experiment.ts`;
-- PostgreSQL experiment repository;
-- `createExperiment` / `getExperiment` handlers;
-- deterministic flagship experiment identity;
-- registered CompanyPackage requirement;
-- F1 fidelity requirement for the current vertical slice;
-- pinned Safety Membrane security-policy identity;
-- OpenAPI create request body;
-- assertion-aware chronology reads.
+## Completed
 
-Canonical profile:
-- experiment: `PROCUREMENT_SUPPLIER_DEGRADATION_V1`;
-- baseline: `BALANCED_SCORE_V1` / `INTERNAL_BASELINE`;
-- treatment: `COST_FIRST_ELIGIBLE_V1` / `PURE_INTENT`;
-- scenario: `SUPPLIER_B_DEGRADATION_V1`;
-- assertion suite: `FLAGSHIP_STANDARD_V1`;
-- STANDARD = 200 matched pairs, 95% confidence, 2,000 deterministic bootstrap resamples.
+### Contracts and API lineage
 
-A correctness fix made persisted child `run_id`s experiment-scoped so multiple experiments in one workspace cannot collide. Historical default/reference run IDs remain unchanged. Execution Golden v1 is preserved and current Execution Golden v2 pins the new persisted-ID semantics.
+- Historical PACK-010 contract lock:
+  `292da499b452a6c77677b80f68629929180fe9f577579a0bbb6e886ec8851c83`
+- Active JSON-Schema contract count: **36**.
+- Active contract lock:
+  `3cc3f0bc776f43f835d12af0f06ddc74a303329f61154311e15f687cd84567ee`
+- CompanyPackage 1.0 preserved; 1.1 additive correction.
+- BusinessEvent 1.0/1.1 preserved; 1.2 additive supplier delivery-miss evidence.
+- OpenAPI **1.1.0** is active.
+- OpenAPI 1.0.0 is preserved at:
+  `packages/contracts/api/history/openapi-v1.0.0.json`.
+- OpenAPI 1.1 only adds optional `assertion_id` selection to chronology; existing callers remain compatible.
+- No JSON-Schema contract changed in PACK-033/034.
 
-## PACK-036 — Live flagship operator result source
+### Database / API
 
-Implemented:
-- server-only CompanyOps API result source;
-- server actions to create the canonical experiment and start execution;
-- same-origin Next.js SSE proxy;
-- narrow `ExecutionProgress` client island;
-- live cockpit/chronology/evidence/replay reads from persisted backend projections;
-- deterministic offline fixture retained only as an explicit fallback;
-- experiment/execution context preserved through result navigation;
-- READY/RUNNING states use a pending surface and **never display a provisional FAIL/BLOCK verdict**;
-- terminal worker failure emits persisted FAILED progress so SSE does not hang;
-- structural operator-control shell row instead of ad-hoc height patches.
+There are now **7 PostgreSQL migrations**.
 
-Result-source states:
-- `LIVE_API` — sealed persisted result;
-- `LIVE_PENDING` — real READY/RUNNING/FAILED experiment without a final verdict;
-- `OFFLINE_FIXTURE` — explicit deterministic QA/demo fallback only.
+Implemented persistence includes:
+
+- workspaces / memberships;
+- immutable CompanyPackages;
+- experiments;
+- simulation runs;
+- BusinessEvents / audit;
+- run progress;
+- snapshots;
+- evaluations;
+- idempotency;
+- immutable view projections;
+- **experiment execution claims/state**.
+
+Tenant resources use workspace authorization + PostgreSQL RLS where defined.
+
+API now implements:
+
+- `createExperiment`;
+- `getExperiment`;
+- `startExperimentRuns`;
+- `getRunProgressStream`;
+- cockpit;
+- assertion-scoped chronology;
+- consequence spine;
+- replay.
+
+`startExperimentRuns` is idempotency-protected by the existing API layer and separately suppresses duplicate active execution claims.
+
+### Experiment execution — PACK-033
+
+Execution protocol:
+
+- version: `companylab.execution-artifact/0.1.0`
+- execution engine: `companylab.execution/0.1.0`
+- STANDARD plan: **200 matched pairs**
+- resulting run observations: **400**
+- Baseline: 200
+- Treatment: 200
+
+The API does not implement simulation semantics. It launches:
+
+`services/simulation-engine/tools/execute_flagship.py`
+
+through the development/test-only process adapter.
+
+Worker transport:
+
+```text
+JSONL progress events
++
+base64 result chunks
++
+terminal byte-count/SHA-256
+```
+
+The result is reconstructed only after its byte count and SHA-256 verify.
+
+Execution Golden v1:
+
+`services/simulation-engine/fixtures/execution-golden-v1.json`
+
+SHA-256:
+
+`5f93becadca10220aee957fc8e959ee7d9a521b6b19c189b4d2eb33551b8b5e5`
+
+Pinned STANDARD execution:
+
+- 400 runs
+- verdict `FAIL`
+- recommendation `BLOCK`
+- projection SHA-256 `8d9fd9b4d1167c6bee795cbde35560814ba5dea3374ee22be236bb80498a2271`
+- sealed-result SHA-256 `28b0f76c32b4fa46a856ff091d0a3c03c29c1d235404b6d1c0600d14ab6588af`
+
+Persistence policy for current MVP:
+
+- every run: identity, variant/pair/scenario, metrics, event-stream hash, state hash, deterministic replay metadata;
+- raw BusinessEvents: representative matched pair only;
+- evaluation: immutable;
+- projection: immutable;
+- execution state: persistent.
+
+Other runs remain deterministically reproducible from pinned model/scenario/seed semantics.
+
+### Progress / live result transport — PACK-034
+
+The first Baseline run is both a genuine simulation run and the execution progress carrier.
+
+Progress uses frozen RunProgressEvent v1 semantics and contains wall-clock operational progress only. It never introduces simulation-time meaning.
+
+`getRunProgressStream` provides reconnecting SSE snapshots with `Last-Event-ID` filtering.
+
+Critical ordering rule:
+
+> `SEALED` is not persisted/exposed until simulation summaries, evaluation, projection, experiment state and execution state have committed.
+
+This avoids a client observing SEALED before cockpit/evidence is readable.
+
+### Live Twinframe source
+
+The server-first web page now uses live API result data when:
+
+```text
+COMPANYLAB_API_BASE_URL
+COMPANYLAB_WORKSPACE_ID
+COMPANYLAB_DEV_PRINCIPAL_ID
+```
+
+are configured.
+
+The API supplies:
+
+- cockpit;
+- assertion-selected chronology;
+- consequence spine;
+- replay.
+
+When no API base is configured, the known sealed projection fixture is used explicitly as `OFFLINE_FIXTURE`.
+
+**If a live API is configured and fails, the web application throws. It does not silently substitute fixture truth.**
+
+Experiment identity is preserved through lens/assertion/pair/joint/cursor navigation.
+
+### Existing product/runtime features preserved
+
+- Simulation Safety Membrane architecture.
+- no ambient SUT authority.
+- deterministic HMAC semantic RNG.
+- integer-microsecond simulation time.
+- replay never re-calls SUT.
+- atomic multi-event transitions.
+- demand/order/fulfillment business loop.
+- replenishment/procurement/supplier execution.
+- hard supplier eligibility distinct from realized degradation.
+- original customer commitment preserved.
+- deterministic goldens v1/v2/v3.
+- 200-pair deterministic evaluation + bootstrap CI.
+- backend-only semantic projection.
+- premium Twinframe UI: Quiet Instrumentation, Dramatic Divergence.
+- aggregate evidence remains authoritative; representative replay is investigative.
+
+## In progress
+
+No partial feature work is authoritative at this checkpoint.
+
+PACK-033 and PACK-034 are complete.
+
+The next implementation should begin from PACK-035.
 
 ## Verification
 
-Current explicit checks: **240 / 240 PASS**.
+### Current focused checkpoint
 
-- Contracts Node 7/7
-- Contracts Python 5/5
-- Config 9/9
-- API 33/33
-- CompanyModel 13/13
-- Simulation/Evaluation/Projection/Execution 77/77
-- UI 9/9
-- Testing foundation 3/3
-- Web 15/15
-- Browser shell QA 25/25
-- Browser flagship/operator QA 44/44
+```bash
+python services/simulation-engine/tools/generate_execution_golden.py --check
+python -m unittest discover -s services/simulation-engine/tests -p 'test_execution.py' -v
+python scripts/validate_execution_protocol.py
+python database/tools/validate_migrations.py
+python apps/api/tools/generate_route_manifest.py --check
+tsc -p apps/api/tsconfig.core.json
+node --test apps/api/tests/*.test.mjs
+tsc -p apps/api/tsconfig.syntax.json
+tsc -p apps/web/tsconfig.syntax.json
+node --test apps/web/tests/*.test.mjs
+python scripts/validate_execution_live_batch.py
+python scripts/quality_gate.py
+```
 
-Also passing: Snapshot Zero continuity, historical PACK-010 lock, generated-bindings stale check, 7 migration static gate, OpenAPI route-manifest gate, API TypeScript core/full syntax, all deterministic/evaluation/projection/execution goldens, historical batch validators, live-operator validator, UI/fixture stale checks and quality gate.
+Latest verified focused results:
 
-Environment blockers are unchanged: npm registry unavailable in this sandbox (no fabricated pnpm lock); live PostgreSQL service unavailable; production auth intentionally unselected; in-process execution launcher not crash-durable.
+- Execution Golden v1: PASS.
+- Execution tests: **5/5 PASS**.
+- worker process-protocol smoke: PASS.
+- database migration validation: **7 migrations PASS**.
+- API route manifest: PASS.
+- API core TypeScript: PASS.
+- API tests: **24/24 PASS**.
+- API source syntax: PASS.
+- web source syntax: PASS.
+- web tests: **12/12 PASS**.
+- PACK-033/034 validator: PASS.
+- quality gate: PASS.
 
-## Recovery artifacts for this checkpoint
+Historical regression checks also re-run:
 
-The complete verified PACK-036 project is `CompanyOps_CURRENT.zip`.
-Filesystem-verified SHA-256 in the producing sandbox: `27cc8f980101f81c8ea3a3f5abbe8be59afb2dd2e5fe3746e138fb594f0c371c`.
+- deterministic simulation golden v3: PASS;
+- Evaluation Golden v1: PASS;
+- Projection Golden v1: PASS;
+- Twinframe browser QA: **31/31 PASS**;
+- shell browser QA: **25/25 PASS**.
 
-The reconstructed full Git history through PACK-036 is `CompanyOps_PACK036_FULL_HISTORY.bundle`.
-Filesystem-verified SHA-256: `2bbdb2ad7bdef8508dad6dc6ecc7b4997b2ab5a7604c26843a941ba04c4b3103`.
+The repeated `artifact_tool` spreadsheet warmup warnings printed by the Python host are external harness noise; each listed command itself returned exit code 0.
 
-**Important remote limitation:** this GitHub repository currently carries checkpoint metadata but the full historical/source tree has not yet been independently materialized and verified through the connector. Do not claim otherwise. In a fresh session, use the complete ZIP/bundle if the GitHub tree is still sparse.
+## GitHub reconciliation status
 
-## Next — chat-steered recommendation
+A prior GitHub commit labeled PACK-035/036 was inspected and found to be **metadata-only**: its manifest claimed implementation files that were not present in the repository. That commit remains preserved in Git history for auditability, but it is not an authoritative completed implementation milestone.
 
-Recommended coherent next build: **PACK-037 → PACK-038 — Reference Workspace Bootstrap + End-to-End Live Integration Harness**.
+This PACK-034 checkpoint is the highest source-backed, test-verified implementation state and supersedes that metadata-only claim. See `state/REMOTE_RECONCILIATION.md`.
 
-Goal: make a fresh normal environment able to bootstrap Acme workspace/company/experiment and prove the complete live path against PostgreSQL.
+The complete verified PACK-034 source archive is stored on `main` in:
 
-Recommended order:
-1. deterministic dev/reference workspace + operator membership bootstrap;
-2. register canonical Acme CompanyPackage through the real repository/application boundary;
-3. create flagship experiment through the real API;
-4. run a QUICK integration profile for dev smoke while preserving STANDARD 200-pair release semantics;
-5. persist progress/runs/evaluation/projection;
-6. fetch sealed cockpit/chronology/evidence/replay through the real API;
-7. verify same-origin SSE + server result source;
-8. retain deterministic fixture/browser QA;
-9. provide one bounded end-to-end integration command for future agents/Claude Code;
-10. still no generic scenario designer, broad workflow platform, production SUT connector or unnecessary queue/Redis.
+```text
+.companyops-bootstrap/pack034-f0e90737/pack034.tar.xz.b64.part00
+.companyops-bootstrap/pack034-f0e90737/pack034.tar.xz.b64.part01
+```
 
-A fresh agent must inspect actual files/ZIP first, then use the active CompanyOps conversation for current strategic direction.
+Recovery:
+
+```bash
+cat .companyops-bootstrap/pack034-f0e90737/pack034.tar.xz.b64.part00 \
+    .companyops-bootstrap/pack034-f0e90737/pack034.tar.xz.b64.part01 \
+  | base64 --decode > /tmp/CompanyOps_PACK034.tar.xz
+
+echo 'f54e61ed8788093e91ec40801b2180ce19f01c8debb802537643fe90898aa401  /tmp/CompanyOps_PACK034.tar.xz' | sha256sum -c -
+mkdir -p /tmp/CompanyOps_PACK034
+tar -xJf /tmp/CompanyOps_PACK034.tar.xz -C /tmp/CompanyOps_PACK034
+```
+
+GitHub Actions did not execute the attempted automatic materialization workflow in this repository, so do not claim the ordinary GitHub tree is a complete source checkout yet. The archive above plus the root state file are the durable remote recovery source.
+
+## Blockers / environment-dependent work
+
+### Genuine blockers
+
+1. **Production durable execution queue not implemented.**
+   - execution claim is persistent;
+   - current worker launch is an in-process child process;
+   - API server composition is already development/test-only;
+   - do not enable production composition until crash recovery/requeue semantics exist.
+
+2. **Live PostgreSQL integration unavailable in this sandbox.**
+   - migration 007 and SQL adapters are statically tested;
+   - no PostgreSQL binary/service is available here.
+
+3. **npm registry unavailable in this sandbox.**
+   - no fake `pnpm-lock.yaml` is created;
+   - live installed-dependency Next/Fastify E2E remains pending a registry-capable environment.
+
+4. **Production auth provider not selected.**
+   - development principal headers are development/test only.
+
+### Deliberate current limitations
+
+- raw events for all 400 STANDARD runs are not persisted; representative pair raw events are retained and all runs remain reproducible.
+- SSE implementation uses reconnecting snapshots rather than a long-held pub/sub stream.
+- the flagship experiment definition is still intentionally narrow/fixed; general experiment authoring comes next.
+
+## Next
+
+### PACK-035 → PACK-036
+
+**Experiment Setup + Preflight and Safety Membrane Execution Boundary**
+
+Recommended implementation order:
+
+1. formalize an experiment request/application model instead of only flagship defaults;
+2. implement deterministic preflight state;
+3. bind CompanyPackage/fidelity/scenario/assertion/SUT-adapter pins into execution request;
+4. wire SecurityPreflight / capability manifest / SUT mode into execution admission;
+5. reject unsafe or unsupported SUT modes before any simulation work;
+6. make experiment setup inspectable in the UI/API without turning it into a broad generic workflow builder;
+7. keep production connectors prohibited;
+8. preserve the existing flagship as the canonical gold-standard preset.
+
+### Fresh-agent startup
+
+A fresh coding agent should:
+
+1. inspect repository/filesystem;
+2. read this file;
+3. if normal source paths are sparse, reconstruct the verified PACK-034 source using the archive commands above;
+4. read `state/CURRENT_STATE.json` from the reconstructed source;
+5. inspect `packets/PACK-033-MANIFEST.json` and `PACK-034-MANIFEST.json`;
+6. inspect ADR-0098 through ADR-0103;
+7. run focused verification above;
+8. continue PACK-035/036 only after verification.
+
+## Permanent recovery rule
+
+CompanyOps must remain recoverable from:
+
+```text
+GitHub repository / verified remote archive
++
+CURRENT_STATE.md
++
+latest complete CompanyOps_CURRENT.zip
+```
+
+After every major phase or roughly 1–2 substantial autonomous passes:
+
+```text
+inspect
+→ test
+→ fix
+→ verify
+→ update CURRENT_STATE.md
+→ create complete ZIP
+→ independently extract/verify ZIP
+→ commit/push Git milestone when possible
+→ continue
+```
+
+Never use chat history as the sole implementation source.
