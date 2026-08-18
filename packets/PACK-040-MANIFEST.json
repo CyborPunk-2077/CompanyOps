@@ -1,0 +1,18 @@
+{
+  "pack_id": "PACK-040",
+  "title": "Flagship Experiment Launch Surface",
+  "status": "COMPLETE",
+  "depends_on": ["PACK-039"],
+  "scope": [
+    "premium focused release-candidate launch page",
+    "Baseline/change/Treatment setup visualization",
+    "immutable Safety Membrane preflight display",
+    "STANDARD run-plan display",
+    "server-side API proxy keeping principal private",
+    "idempotent create/start transport",
+    "progress polling and sealed-result navigation",
+    "explicit offline view-only behavior",
+    "desktop/tablet/mobile browser QA"
+  ],
+  "non_goals": ["generic workflow builder","frontend semantic evaluation","production connector","general scenario authoring"]
+}
