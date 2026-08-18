@@ -1,32 +1,32 @@
 # CompanyOps / CompanyLab — CURRENT STATE
 
-> **Permanent identity:** **CompanyOps = CompanyLab.** Existing `companylab` package names, contract URLs, UI labels and architecture are intentional.
+> **Permanent identity:** **CompanyOps = CompanyLab.** Existing `companylab` package names, contract URLs, UI labels, schemas and architecture are intentional.
 >
-> **Authority model:** this conversation is the product/roadmap authority for what to build next and how to steer CompanyOps. The verified filesystem/repository is authoritative for implementation claims. GitHub is a durable checkpoint store, but an incomplete/stale remote must never override a verified complete source snapshot.
+> **Authority model:** this **conversation is the product/roadmap authority** for what CompanyOps should build next, sequencing, scope and steering. The verified filesystem/repository is authoritative for implementation claims. GitHub is the durable implementation/checkpoint store, but an incomplete remote must never override a complete verified snapshot.
 
 ## Current project state
 
-- Current cumulative implementation: **PACK-040**.
-- Working version: **`0.0.40-workspace-bootstrap-launch`**.
-- Status: **`BOOTSTRAP_AND_FLAGSHIP_LAUNCH_READY`**.
+- Current cumulative implementation: **PACK-042**.
+- Working version: **`0.0.42-company-model-intake-fidelity`**.
+- Status: **`COMPANY_MODEL_INTAKE_AND_FIDELITY_REPORT_READY`**.
 - Product: **Business CI — pre-production operational regression testing for business changes.**
-- Current flagship: cost-first eligible procurement saves unit cost locally but, under a matched supplier-degradation world, causes service/inventory harm. Canonical STANDARD result remains **BusinessVerdict `FAIL` / ReleaseRecommendation `BLOCK`**.
-- Active JSON-Schema contracts: **36**.
-- Database migrations: **8**.
+- Current vertical: industrial distributor / machinery & auto-parts operations.
+- Canonical flagship: cost-first eligible procurement is locally cheaper but causes downstream service/inventory harm under a matched supplier-degradation world; STANDARD result remains **FAIL / BLOCK**.
+- Active frozen JSON-Schema contracts: **36**; active lock remains `3cc3f0bc776f43f835d12af0f06ddc74a303329f61154311e15f687cd84567ee`.
+- PostgreSQL migrations: **9**. Active OpenAPI: **1.3.0**.
 - Canonical GitHub repo: `CyborPunk-2077/CompanyOps`.
-- **Remote warning:** `main` is still not a verified complete ordinary source checkout. Sandbox GitHub DNS is unavailable and large connector-transfer literals have failed integrity checks. Do not infer missing code from metadata. The latest complete verified `CompanyOps_CURRENT.zip` is the source recovery authority until full-tree materialization is verified.
-- Latest complete ZIP checkpoint: **520 files**, SHA-256 **`89868b3abd588cb4e03fac86c5778554198f3e28fcd29c149abc72675a12c98e`**.
-- Next coherent batch from the chat roadmap: **PACK-041 → PACK-042 — Company Model Intake + Fidelity/Provenance Report**.
+- **Remote warning:** GitHub `main` is still not a verified complete ordinary source checkout. It is a checkpoint/history store until representative source paths are materialized and verified. The complete verified `CompanyOps_CURRENT.zip` is the recovery authority.
+- Next chat-directed batch: **PACK-043 → PACK-044 — Observed Evidence Calibration + F2 Upgrade Path**.
 
 ## Architecture
 
 ```text
 CompanyPackage / Company IR
-→ immutable CompanyModel
+→ immutable CompanyModel + semantic validation
+→ deterministic Fidelity/Provenance Report
 → deterministic runtime bootstrap
 → discrete-event scheduler + semantic HMAC RNG
-→ typed BusinessEvents / pure reducer
-→ exact RuntimeState + snapshot/replay
+→ typed BusinessEvents / pure reducer / exact RuntimeState
 → matched Baseline / Treatment worlds
 → demand / quote / order / inventory / fulfillment
 → replenishment
@@ -35,7 +35,7 @@ CompanyPackage / Company IR
       Treatment:
         minimized SutDecisionRequest
         → pure-intent SANDBOX_ADAPTER
-        → frozen request/response/intent schemas
+        → frozen request/response/intent validation
         → capability/reference/resource/business-policy checks
         → accepted ProcurementIntent only
 → supplier execution
@@ -45,178 +45,160 @@ CompanyPackage / Company IR
 → sealed backend projection
 → immutable persistence
 → workspace API
-→ server-first Twinframe / experiment launch surface
+→ server-first Twinframe / Launch / Model Assurance surfaces
 ```
 
-Semantic truth boundary:
+Semantic truth boundary: `DOMAIN → RUNTIME → EVALUATION → SECURITY → BACKEND_PROJECTION → UI`.
 
-```text
-DOMAIN → RUNTIME → EVALUATION → SECURITY → BACKEND PROJECTION → UI
-```
-
-The browser may perform navigation, transport and progress display. It must not calculate KPI truth, paired harm, confidence intervals, assertion status, BusinessVerdict, ReleaseRecommendation or gate semantics.
+The browser may render/navigation-select authoritative data and transport requests/progress. It must not compute KPI truth, paired harm, confidence intervals, fidelity, assertion status, verdict, recommendation or gate semantics.
 
 ## Completed
 
 ### Foundation through PACK-038
 
-- Business CI product wedge, full PRD and Company IR.
-- immutable CompanyPackage + semantic CompanyModel validation/content SHA-256.
-- immutable universal BusinessEvent model.
-- deterministic integer-microsecond discrete-event runtime.
-- HMAC counter-based semantic RNG; private Treatment draws cannot shift matched exogenous worlds.
-- pure reducer, exact authoritative state hashing, resumable snapshots and replay equality.
+- Business CI wedge, Company IR, immutable CompanyModel and universal BusinessEvent model.
+- deterministic discrete-event simulation, semantic HMAC RNG, exact state hashing, snapshots and replay without re-calling SUT.
 - matched Baseline/Treatment worlds.
-- demand → quote → order → inventory → fulfillment + stockout/backorder/cancellation.
+- demand → quote → order → inventory → fulfillment; stockout/backorder/cancellation.
 - replenishment → procurement → supplier execution/lead-time/reliability/delivery-miss/receipt.
-- original customer commitment preserved for service evaluation.
-- Baseline `BALANCED_SCORE_V1`; Treatment `COST_FIRST_ELIGIBLE_V1`.
-- real typed Simulation Safety Membrane: minimized request → frozen SUT request/response/intent validation → capability/reference/resource/business checks → typed intent → domain events.
-- Baseline makes zero Treatment-SUT calls.
-- malformed SUT output is contained as SecurityFinding before business-state mutation.
-- invalid platform-generated SUT request is treated as platform-integrity breach.
-- runtime SecurityFindings independently propagate to SecurityGate BLOCK/fail-closed behavior.
-- STANDARD evaluation uses **200 matched pairs / 400 run observations**, 95% confidence, deterministic 2,000-resample paired bootstrap.
-- positive harm means Treatment worse; only `COMPLETED_VALID` runs enter authoritative comparison.
-- flagship service regressions FAIL/BLOCK while purchase unit cost is a material Treatment benefit.
-- backend-owned ExperimentCockpit/Assertion/Chronology/Consequence/Replay projection.
-- representative pair is investigative only; it never replaces aggregate evidence.
-- premium Twinframe UI: **Quiet Instrumentation, Dramatic Divergence**.
-- persistent experiment execution claims/progress and immutable evaluation/projection seal.
-- immutable experiment setup + SecurityPreflight before matched worlds execute.
-- deterministic/runtime/evaluation/projection/execution goldens are versioned historical evidence, never silently overwritten.
+- deterministic STANDARD evaluation: 200 matched pairs, 95% confidence, 2,000 paired bootstrap resamples.
+- BusinessVerdict / ReleaseRecommendation plus independent Technical/Security/Fidelity gates.
+- real typed Simulation Safety Membrane; Baseline performs zero Treatment-SUT calls; malformed SUT output is contained before business-state mutation.
+- backend-owned cockpit/assertion/chronology/consequence/replay projection and premium Twinframe UI under **Quiet Instrumentation, Dramatic Divergence**.
 
-### Contract lineage
+### PACK-039 / PACK-040 — Bootstrap + Launch
 
-- Historical PACK-010 lock: `292da499b452a6c77677b80f68629929180fe9f577579a0bbb6e886ec8851c83`.
-- Active contract lock: `3cc3f0bc776f43f835d12af0f06ddc74a303329f61154311e15f687cd84567ee`.
-- CompanyPackage 1.0 preserved; 1.1 additive correction.
-- BusinessEvent 1.0/1.1 preserved; 1.2 additive supplier delivery-miss fact.
-- OpenAPI history remains versioned; JSON Schema remains runtime authority.
+- deterministic development workspace bootstrap for `WS-ACME-DEMO` and `DEV-COMPANYOPS-OPERATOR`.
+- immutable Acme CompanyPackage registration, idempotent but identity-conflict-intolerant.
+- premium `/launch` release-candidate instrument with immutable Baseline/Treatment/SUT/preflight setup.
+- STANDARD 200-pair plan, Safety Membrane posture, server-side launch proxy, idempotent create/start, progress and sealed-result navigation.
+- offline launch is view-only and never fabricates execution.
 
-### PACK-039 — Development Workspace Bootstrap
+### PACK-041 — Company Model Intake + Fidelity/Provenance Runtime
 
-- deterministic development bootstrap plan/hash;
-- workspace `WS-ACME-DEMO` / `Acme Business CI Lab`;
-- development principal `DEV-COMPANYOPS-OPERATOR`;
-- immutable package `PKG-acme-industrial-f1-v1.1`;
-- workspace/member/package bootstrap is idempotent but identity-conflict-intolerant;
-- no silent workspace rename, role mutation or model overwrite;
-- development/test-only bootstrap CLI;
-- no credentials embedded/checkpointed.
+- complete CompanyPackage 1.1 JSON intake via server/API.
+- JSON-Schema + semantic CompanyModel validation remains authoritative.
+- behavior parameters require resolvable `provenance_ref`; unverifiable assumptions fail semantic validation.
+- deterministic `companylab.company-model-fidelity-report/0.1` covers F0–F4, decision scope, readiness, confidence, provenance composition, critical weak inputs and findings.
+- report is content-hashed and persisted separately in append-only/RLS-protected `company_model_fidelity_reports`; immutable CompanyPackage rows are never rewritten.
+- OpenAPI 1.3 adds intake + fidelity-report reads; historical 1.2 is archived; frozen JSON-Schema lock is unchanged.
 
-This is deliberately not production tenant provisioning and not ERP ingestion.
+Reference Acme report intentionally says:
 
-### PACK-040 — Flagship Experiment Launch Surface
+```text
+F1
+DEMO_ONLY
+LOW confidence
+READY_WITH_WARNINGS
+Observed evidence: 0%
+Template/synthetic evidence: 50%
+Behavior parameters: 9/10 weak
+```
 
-- premium `/launch` release-candidate instrument, not a generic wizard/dashboard;
-- visual Baseline / change-under-test / Treatment comparison;
-- immutable Safety Membrane setup and **8 preflight checks** visible before launch;
-- STANDARD 200-pair plan displayed with scenario/assertion/capability/egress posture;
-- server-side Next proxy keeps the development principal private;
-- create/start requests use idempotency and pin expected setup hash;
-- small client island handles transport/progress only;
-- live progress polling redirects to sealed result;
-- if live API is absent, launch is view-only and never fabricates an offline execution;
-- result screen exposes compact **New run** navigation.
+This is model truth, not a test failure: the demo is runnable but must not masquerade as calibrated real-company evidence.
+
+### PACK-042 — Model Assurance Surface
+
+- deterministic shared fidelity fixture generated from the actual CompanyModel report.
+- server-first `/company-model` Model Assurance screen.
+- hierarchy: identity → assurance verdict → provenance composition → critical inputs → findings → narrow intake control.
+- narrow complete-CompanyPackage JSON intake control; client parses/transports only and does not score fidelity.
+- live API when configured; explicit reference fixture only when live API is absent; live errors never silently fall back.
+- premium laboratory-style assurance UI, not a generic dashboard or mapping studio.
 
 ## Verification
 
-Latest PACK-040 checkpoint:
-
-- simulation tests: **84/84 PASS**;
-- API tests: **33/33 PASS**;
-- web tests: **17/17 PASS**;
-- contract history: PASS;
-- generated contract bindings current: PASS;
-- database static validation: **8 migrations PASS**;
-- execution/preflight/Safety-Membrane/Twinframe/bootstrap-launch validators: PASS;
-- Twinframe browser QA: **42/42 PASS**;
-- shell browser QA: **25/25 PASS**;
-- launch browser QA: **34/34 PASS**;
-- explicit tests + browser checks in the current checkpoint: **235 PASS**;
-- quality gate: PASS;
-- complete ZIP secret scan: PASS;
-- ZIP CRC/integrity: PASS;
-- clean ZIP extraction recovery verification: PASS.
-
-Core verification commands:
-
-```bash
-python packages/contracts/tools/validate_history.py
-python packages/contracts/tools/generate_bindings.py --check
-python database/tools/validate_migrations.py
-PYTHONPATH=services/simulation-engine/src python -m unittest discover -s services/simulation-engine/tests -v
-tsc -p apps/api/tsconfig.core.json
-node --test apps/api/tests/*.test.mjs
-tsc -p apps/api/tsconfig.syntax.json
-tsc -p apps/web/tsconfig.syntax.json
-node --test apps/web/tests/*.test.mjs
-python scripts/validate_safety_membrane_batch.py
-python scripts/validate_bootstrap_launch_batch.py
-python packages/testing/tools/visual_result_qa.py
-python packages/testing/tools/visual_shell_qa.py
-python packages/testing/tools/visual_launch_qa.py
-python scripts/quality_gate.py
-```
-
-## Genuine blockers
-
-1. npm registry networking unavailable in the current sandbox; no genuine `pnpm-lock.yaml`, and no fake lockfile is created.
-2. PostgreSQL binaries/service unavailable here; SQL/repository semantics are statically validated but live bootstrap/DB integration needs a PostgreSQL-capable environment.
-3. Production auth provider is not selected; development principal headers are development/test only.
-4. Production durable execution queue is not implemented; process launch remains development/test-only until crash recovery/requeue semantics exist.
-5. GitHub ordinary full-tree materialization remains incomplete because normal Git transport cannot resolve `github.com` from this sandbox and large connector transfer literals have integrity problems. Update text checkpoints normally, but do not claim remote source completeness until key source files are verified.
-
-## Next — PACK-041 → PACK-042
-
-### Company Model Intake + Fidelity/Provenance Report
-
-Goal: move CompanyOps beyond the hardcoded Acme fixture while keeping the product narrow and honest.
-
-Implementation order:
-
-1. add server-side/API **CompanyPackage JSON file intake**;
-2. validate against the correct CompanyPackage JSON Schema;
-3. run existing CompanyModel semantic validation;
-4. register accepted packages immutably/content-addressed;
-5. produce deterministic **Fidelity & Provenance Report** with F0–F4, observed/configured/inferred/template/synthetic coverage, missing/weak inputs, confidence warnings, and explicit claims/limitations;
-6. build a premium laboratory-style intake/review screen, not a generic upload form;
-7. allow an accepted model to become the model selected by the existing flagship launch surface;
-8. keep AI explanation secondary/non-authoritative.
-
-Explicit non-goals: no automatic ERP/CRM connectors, no generic CSV mapper, no production ingestion pipeline, no LLM-generated CompanyPackage from arbitrary prose, and no broad experiment/scenario workflow builder.
-
-Desired product flow:
+Final clean ZIP extraction verification:
 
 ```text
-bring/validate a company model
-→ understand fidelity/provenance honestly
-→ inspect immutable experiment setup/preflight
-→ launch matched Business CI run
-→ inspect PASS/FAIL/TRADEOFF in Twinframe
+CompanyModel tests                16 / 16 PASS
+API tests                         36 / 36 PASS
+Web tests                         22 / 22 PASS
+Model Assurance browser QA        32 / 32 PASS
+Database migrations               9 PASS
+OpenAPI route manifest            PASS
+Contracts build                   PASS
+CompanyModel build                PASS
+API core/syntax                    PASS
+Web syntax                         PASS
+Fidelity fixture stale check       PASS
+PACK-041/042 validator             PASS
+Quality gate                       PASS
+ZIP CRC/integrity                  PASS
+Clean ZIP extraction recovery      PASS
+```
+
+Existing visual regressions remain green: Twinframe **42/42**, Launch **34/34**, Shell **25/25**.
+
+Historical simulation/evaluation/projection goldens passed before the combined command hit the environment wall while entering the expensive active 200-pair Execution v3 regeneration. PACK-041/042 does not alter simulation/execution semantics, so that expensive active check was not restarted; Safety Membrane, preflight and cumulative semantic validators remain PASS.
+
+Recovery build order from a clean ZIP:
+
+```bash
+tsc -p packages/contracts/tsconfig.json
+tsc -p packages/company-model/tsconfig.json
+node --test packages/company-model/tests/*.test.mjs
+```
+
+## Genuine blockers / environment-dependent work
+
+1. npm registry networking unavailable; no fake `pnpm-lock.yaml` is created.
+2. PostgreSQL service/binaries unavailable here; SQL/RLS/repository semantics are statically validated.
+3. Production auth provider not selected; development principal headers are development/test only.
+4. Production durable execution queue not implemented; process worker remains development/test-only until crash recovery/requeue exists.
+5. GitHub ordinary source-tree materialization remains incomplete because normal Git transport cannot resolve `github.com` from this sandbox and connector bulk-transfer is constrained. Keep GitHub state/manifests updated, but do not claim full source completeness until representative source files are verified remotely.
+
+## Next — PACK-043 → PACK-044
+
+### Observed Evidence Calibration + F2 Upgrade Path
+
+**Roadmap rationale from this chat:** CompanyOps can now tell a user *why* their model is weak. The next highest-value capability is helping a real business replace template assumptions with observed evidence and prove that the model became more trustworthy—without turning CompanyOps into a giant ERP connector/mapping platform.
+
+Recommended order:
+
+1. define a narrow immutable calibration input for observed demand history, supplier delivery/performance history and inventory snapshots;
+2. validate source provenance, timestamps/date ranges, units and entity references;
+3. derive calibrated behavior parameters deterministically without mutating the original package;
+4. create a **new CompanyPackage/company-model version** with explicit transformation lineage;
+5. preserve source evidence and derivation hashes so calibration is replayable/auditable;
+6. demonstrate a controlled **F1 → F2** upgrade on the industrial-distributor model;
+7. regenerate fidelity report and prove observed share / critical provenance improves;
+8. add a focused calibration surface showing **what evidence will improve what assumptions** before applying it;
+9. accept narrow typed CSV/JSON only; do not build a generic connector/mapping platform;
+10. do not auto-claim F3/F4 without stronger calibration evidence.
+
+Desired flow:
+
+```text
+bring company model
+→ see why it is weak
+→ add observed evidence
+→ produce new immutable calibrated model version
+→ verify fidelity/provenance improvement
+→ preflight + run Business CI
+→ inspect verdict in Twinframe
 ```
 
 ## Fresh-agent startup
 
-1. obtain the latest complete `CompanyOps_CURRENT.zip` or a verified complete Git checkout;
+1. obtain latest complete `CompanyOps_CURRENT.zip` or a verified complete Git checkout;
 2. read this file and `state/CURRENT_STATE.json`;
-3. inspect `packets/PACK-039-MANIFEST.json` and `PACK-040-MANIFEST.json` plus recent ADRs;
-4. verify actual source before trusting historical metadata;
-5. run the checkpoint commands above;
-6. continue PACK-041/042 using the chat-defined roadmap;
-7. checkpoint again before another major phase.
+3. inspect `packets/PACK-041-MANIFEST.json`, `PACK-042-MANIFEST.json`, ADR-0120→0123 and `docs/PACK041_042_ENGINEERING_NOTES.md`;
+4. inspect actual source before trusting old Git metadata;
+5. run the focused verification/build order above;
+6. continue PACK-043/044 according to this chat-defined roadmap;
+7. checkpoint before another major phase.
 
 Permanent loop:
 
 ```text
-chat-directed product goal
+chat context chooses product direction
 → inspect actual source
-→ implement
+→ implement coherent batch
 → test/fix/verify
 → update CURRENT_STATE.md
-→ complete CompanyOps_CURRENT.zip
-→ independently verify ZIP
-→ push GitHub checkpoint where transport permits
-→ continue
+→ create complete CompanyOps_CURRENT.zip
+→ independently extract/verify ZIP
+→ update/push GitHub checkpoint where transport permits
+→ continue according to chat roadmap
 ```
