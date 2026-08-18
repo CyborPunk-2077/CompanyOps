@@ -1,0 +1,15 @@
+{
+  "pack_id": "PACK-039",
+  "title": "Development Workspace Bootstrap",
+  "status": "COMPLETE",
+  "depends_on": ["PACK-038"],
+  "scope": [
+    "deterministic development bootstrap plan",
+    "idempotent workspace creation",
+    "identity-strict OWNER membership bootstrap",
+    "immutable Acme CompanyPackage registration",
+    "development/test-only CLI",
+    "source tests for conflict and secret safety"
+  ],
+  "non_goals": ["production tenant provisioning","production auth","automatic ERP ingestion","role mutation"]
+}
